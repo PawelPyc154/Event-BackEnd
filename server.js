@@ -7,6 +7,7 @@ const cors = require("cors");
 const conectDB = require("./config/db");
 
 const events = require("./routes/events");
+const contact = require("./routes/contact");
 
 dotenv.config({path: "./config/config.env"});
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/events", events);
+app.use("/api/contact", contact);
 
 app.use(errorHandler);
 

@@ -1,15 +1,15 @@
-const fs = require("fs");
-const mongoose = require("mongoose");
-const colors = require("colors");
-const dotenv = require("dotenv");
+const fs = require('fs');
+const mongoose = require('mongoose');
+require('colors');
+const dotenv = require('dotenv');
 
 // Load env vars
 
-dotenv.config({path: "./config/config.env"});
+dotenv.config({ path: './config/config.env' });
 
 // Load models
 
-const Event = require("./models/Event");
+const Event = require('./models/Event');
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI, {
@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // Read JSON files
 
 const events = JSON.parse(
-  fs.readFileSync(`${__dirname}/_data/events.json`, "utf-8")
+  fs.readFileSync(`${__dirname}/_data/events.json`, 'utf-8'),
 );
 
 // Import into DB
@@ -31,7 +31,7 @@ const importData = async () => {
   try {
     await Event.create(events);
 
-    console.log("Data Imported...".green.inverse);
+    console.log('Data Imported...'.green.inverse);
     process.exit();
   } catch (err) {
     console.log(err);
@@ -44,15 +44,15 @@ const deleteData = async () => {
   try {
     await Event.deleteMany();
 
-    console.log("Data Destroyed...".red.inverse);
+    console.log('Data Destroyed...'.red.inverse);
     process.exit();
   } catch (err) {
     console.log(err);
   }
 };
 
-if (process.argv[2] === "-i") {
+if (process.argv[2] === '-i') {
   importData();
-} else if (process.argv[2] === "-d") {
+} else if (process.argv[2] === '-d') {
   deleteData();
 }

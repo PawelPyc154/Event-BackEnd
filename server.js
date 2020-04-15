@@ -1,17 +1,20 @@
-const express = require("express");
-const dotenv = require("dotenv");
-require("colors");
-const cors = require("cors");
+const express = require('express');
+const dotenv = require('dotenv');
+require('colors');
+const cors = require('cors');
+const passport = require('passport');
 
-const errorHandler = require("./middleware/error");
-const conectDB = require("./config/db");
+const errorHandler = require('./middleware/error');
+const { fbPassportStrategy } = require('./middleware/auth');
+const conectDB = require('./config/db');
 
-const events = require("./routes/events");
-const contact = require("./routes/contact");
+const events = require('./routes/events');
+const contact = require('./routes/contact');
 
-dotenv.config({path: "./config/config.env"});
+dotenv.config({ path: './config/config.env' });
 
 conectDB();
+passport.use(fbPassportStrategy);
 
 const app = express();
 app.use(express.json());
@@ -19,8 +22,8 @@ app.use(express.json());
 // Protect
 app.use(cors());
 
-app.use("/api/events", events);
-app.use("/api/contact", contact);
+app.use('/api/events', events);
+app.use('/api/contact', contact);
 
 app.use(errorHandler);
 

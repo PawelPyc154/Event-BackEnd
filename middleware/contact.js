@@ -1,4 +1,4 @@
-const asyncHandler = require("../middleware/async");
+const asyncHandler = require("./async");
 const {validationResult, check} = require("express-validator");
 const sendEmail = require("../utils/sendEmail");
 

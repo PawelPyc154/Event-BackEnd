@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const rateLimit = require("express-rate-limit");
 
-const {sendEmail, emailValidation} = require("../controllers/contact");
+const {sendEmail, emailValidation} = require("../middleware/contact");
 
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000,

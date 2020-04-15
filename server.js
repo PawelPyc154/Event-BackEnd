@@ -1,9 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
 require("colors");
-const errorHandler = require("./middleware/error");
 const cors = require("cors");
 
+const errorHandler = require("./middleware/error");
 const conectDB = require("./config/db");
 
 const events = require("./routes/events");

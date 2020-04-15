@@ -15,6 +15,7 @@ const EventSchema = new mongoose.Schema({
   time: {start: {type: Number}, end: {type: Number}},
   type: {type: String, enum: ["dance", "picnic"], default: "dance"},
   attractions: {type: [String], enum: ["dance", "picnic"]},
+  fbList: {type: Boolean, default: false},
   createdAt: {
     type: Date,
     default: Date.now,

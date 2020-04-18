@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
   // Log to console for dev
 
-  console.log(err);
+  // console.log(err);
 
   // Mongoose bad ObjectID
   if (err.name === 'CastError') {
@@ -23,11 +23,18 @@ const errorHandler = (err, req, res, next) => {
   // Mongoose validation error
 
   if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map((val) => val.message);
-    error = new ErrorResponse(message, 400);
+    const message = Object.values(err.errors).map((val) => {
+      // console.log({ [val.path]: val.message });
+
+      return { [val.path]: val.message };
+    });
+    console.log(message);
+    error = { message, statusCode: 400 };
   }
 
-  res.status(error.ststusCode || 500).json({
+  console.log(error);
+
+  res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || 'Server Error',
   });

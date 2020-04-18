@@ -1,15 +1,34 @@
-const FacebookStrategy = require('passport-facebook').Strategy;
+const jwt = require('jsonwebtoken');
+const asyncHandler = require('./async');
+const ErrorResponse = require('../utils/errorResponse');
+const User = require('../models/User');
 
-exports.fbPassportStrategy = new FacebookStrategy(
-  {
-    clientID: `${process.env.FACEBOOK_APP_ID}`,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: 'http://localhost:3000/auth/facebook/callback',
-  },
-  (accessToken, refreshToken, profile, cb) =>
-    // User.findOrCreate({facebookId: profile.id}, function (err, user) {
-    //     return cb(err, user);
-    // });
+// Protect routes
 
-    cb(null, profile),
-);
+exports.protect = asyncHandler(async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    [, token] = req.headers.authorization.split(' ');
+  } else if (req.cookies.token) {
+    token = req.cookies.token;
+  }
+
+  // Make sure token exists
+
+  if (!token) {
+    return next(new ErrorResponse('Not authorize to access this route', 401));
+  }
+
+  try {
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decoded);
+    req.user = await User.findById(decoded.id);
+    next();
+  } catch (err) {
+    return next(new ErrorResponse('Not authorize to access this route', 401));
+  }
+});

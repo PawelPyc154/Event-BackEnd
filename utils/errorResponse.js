@@ -1,7 +1,8 @@
 class ErrorResponse extends Error {
   constructor(message, statusCode) {
-    super(message);
+    super();
     this.statusCode = statusCode;
+    this.message = typeof message === 'string' ? message : { ...message };
   }
 }
 

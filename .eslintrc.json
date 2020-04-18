@@ -15,7 +15,6 @@
   "rules": {
     "no-underscore-dangle": "off",
     "no-unused-vars": "off",
-    "no-console": "off",
     "consistent-return": "off",
     "func-names": "off",
     "no-useless-escape": "off"

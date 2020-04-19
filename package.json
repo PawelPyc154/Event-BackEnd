@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "nodemon server"
+        "dev": "nodemon server",
+        "deploy": "git push heroku master"
     },
     "author": "",
     "license": "ISC",
@@ -30,6 +31,7 @@
         "passport-facebook-token": "^3.3.0",
         "passport-google-plus-token": "^2.1.0",
         "passport-google-token": "^0.1.2",
+        "slugify": "^1.4.0",
         "xss-clean": "^0.1.1"
     },
     "devDependencies": {

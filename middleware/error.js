@@ -28,6 +28,7 @@ const errorHandler = (err, req, res, next) => {
         [val.path]: val.message,
       })),
     );
+
     error = new ErrorResponse(message, 400);
   }
 

@@ -46,8 +46,9 @@ exports.register = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-// @desc         Register or login with facebook
+// @desc         Register or login with facebook or google
 // @route        POST /api/auth/facebook/token
+// @route        POST /api/auth/google/token
 // @access       Public
 exports.LoginRegisterFbGoogle = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.user._json.email });

@@ -8,7 +8,7 @@ const { protect } = require('../middleware/auth');
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: 1,
+  max: 10,
   message: {
     error: { limiter: `Dodałeś zbyt dużo wydarzeń, spróbuj za godzine` },
   },

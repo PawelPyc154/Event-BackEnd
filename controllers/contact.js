@@ -11,12 +11,6 @@ exports.sendEmail = asyncHandler(async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ success: false, errors: errors.array() });
   }
-  console.log({
-    email: req.body.email,
-    subject: req.body.subject,
-    message: req.body.message,
-  });
-
   await sendEmail({
     from: req.body.email,
     to: 'pawelpyc154@gmail.com',

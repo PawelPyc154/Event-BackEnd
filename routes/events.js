@@ -3,7 +3,11 @@ const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
-const { getEvents, createEvent, getAdress } = require('../controllers/events');
+const {
+  getEvents,
+  createEvent,
+  deleteEvent,
+} = require('../controllers/events');
 const { protect } = require('../middleware/auth');
 
 const limiter = rateLimit({
@@ -15,5 +19,6 @@ const limiter = rateLimit({
 });
 
 router.route('/').get(getEvents).post(limiter, protect, createEvent);
+router.route('/:id').delete(protect, deleteEvent);
 
 module.exports = router;

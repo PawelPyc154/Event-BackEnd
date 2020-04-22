@@ -3,6 +3,7 @@ const User = require('../models/User');
 const asyncHandler = require('../middleware/async');
 const geocoder = require('../utils/geocoder');
 const translate = require('../utils/translate');
+const ErrorResponse = require('../utils/errorResponse');
 
 // @desc         Get all bootcamps
 // @route        GET /api/bootcamps
@@ -12,6 +13,7 @@ exports.getEvents = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ success: true, count: events.length, data: events });
 });
+
 // @desc         Create bootcamp
 // @route        POST /api/bootcamps
 // @access       Private
@@ -27,4 +29,30 @@ exports.createEvent = asyncHandler(async (req, res, next) => {
 
   const event = await Event.create(req.body);
   res.status(200).json({ success: true, data: event });
+});
+
+// @desc         Delete event
+// @route        DELETE /api/event/:id
+// @access       Private
+exports.deleteEvent = asyncHandler(async (req, res, next) => {
+  const event = await Event.findById(req.params.id);
+  if (!event) {
+    return next(
+      new ErrorResponse(`Event not found with id of ${req.params.id}`, 404),
+    );
+  }
+
+  // Make sure user is event owner
+  if (event.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorizated to update this event`,
+        401,
+      ),
+    );
+  }
+
+  event.remove();
+
+  res.status(200).json({ succees: true, data: {} });
 });

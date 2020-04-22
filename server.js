@@ -13,7 +13,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const xss = require('xss-clean');
-const limiter = require('./utils/limiter');
+const rateLimit = require('express-rate-limit');
+
 // conect DB
 const conectDB = require('./config/db');
 // middleware
@@ -35,6 +36,13 @@ app.use(cookieParser()); // Cookie parser
 app.use(morgan('dev')); // Dev loggin middleware
 
 // Protect
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 100,
+  message: {
+    error: { limiter: `Zbyt dużo zapytań, spróbuj za godzine` },
+  },
+});
 app.use(limiter);
 app.use(fileupload());
 app.use(mongoSanitize());

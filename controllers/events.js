@@ -18,12 +18,12 @@ exports.getEvents = asyncHandler(async (req, res, next) => {
 exports.createEvent = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
 
-  const adress = await geocoder.reverse({
-    lat: req.body.coordinates.latitude,
-    lon: req.body.coordinates.longitude,
-  });
-  req.body.place = adress[0].city;
-  req.body.province = translate(adress[0].stateCode);
+  // const adress = await geocoder.reverse({
+  //   lat: req.body.coordinates.latitude,
+  //   lon: req.body.coordinates.longitude,
+  // });
+  req.body.place = 'adress[0].city';
+  req.body.province = 'translate(adress[0].stateCode)';
 
   const event = await Event.create(req.body);
   res.status(200).json({ success: true, data: event });

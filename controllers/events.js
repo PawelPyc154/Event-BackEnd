@@ -56,3 +56,32 @@ exports.deleteEvent = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ succees: true, data: {} });
 });
+
+// @desc         Update event
+// @route        PUT /api/event/:id
+// @access       Private
+exports.updateEvent = asyncHandler(async (req, res, next) => {
+  let event = await Event.findById(req.params.id);
+  if (!event) {
+    return next(
+      new ErrorResponse(`Event not found with id of ${req.params.id}`, 404),
+    );
+  }
+
+  // Make sure user is event owner
+  if (event.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorizated to update this event`,
+        401,
+      ),
+    );
+  }
+
+  event = await Event.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({ succees: true, data: event });
+});

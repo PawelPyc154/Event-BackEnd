@@ -7,6 +7,7 @@ const {
   getEvents,
   createEvent,
   deleteEvent,
+  updateEvent,
 } = require('../controllers/events');
 const { protect } = require('../middleware/auth');
 
@@ -19,6 +20,6 @@ const limiter = rateLimit({
 });
 
 router.route('/').get(getEvents).post(limiter, protect, createEvent);
-router.route('/:id').delete(protect, deleteEvent);
+router.route('/:id').delete(protect, deleteEvent).put(protect, updateEvent);
 
 module.exports = router;

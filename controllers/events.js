@@ -19,7 +19,6 @@ exports.getEvents = asyncHandler(async (req, res, next) => {
 // @access       Private
 exports.createEvent = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
-
   const adress = await geocoder.reverse({
     lat: req.body.coordinates.latitude,
     lon: req.body.coordinates.longitude,

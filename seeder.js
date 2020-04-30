@@ -4,11 +4,9 @@ require('colors');
 const dotenv = require('dotenv');
 
 // Load env vars
-
 dotenv.config({ path: './config/config.env' });
 
 // Load models
-
 const Event = require('./models/Event');
 const User = require('./models/User');
 
@@ -21,7 +19,6 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Read JSON files
-
 const events = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/events.json`, 'utf-8'),
 );
@@ -30,7 +27,6 @@ const users = JSON.parse(
 );
 
 // Import into DB
-
 const importData = async () => {
   try {
     await Event.create(events);
@@ -44,7 +40,6 @@ const importData = async () => {
 };
 
 // Delete data
-
 const deleteData = async () => {
   try {
     await Event.deleteMany();

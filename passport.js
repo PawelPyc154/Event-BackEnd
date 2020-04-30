@@ -1,6 +1,5 @@
 const passport = require('passport');
 const FacebookTokenStrategy = require('passport-facebook-token');
-const GooglePlusTokenStrategy = require('passport-google-plus-token');
 const GoogleTokenStrategy = require('passport-google-token').Strategy;
 
 passport.serializeUser(function (user, cb) {
@@ -20,7 +19,6 @@ passport.use(
     },
   ),
 );
-
 passport.use(
   new GoogleTokenStrategy(
     {
@@ -32,18 +30,3 @@ passport.use(
     },
   ),
 );
-
-// const FacebookStrategy = require('passport-facebook').Strategy;
-
-// passport.use(
-//   new FacebookStrategy(
-//     {
-//       clientID: `${process.env.FACEBOOK_APP_ID}`,
-//       clientSecret: process.env.FACEBOOK_APP_SECRET,
-//       callbackURL: 'http://www.example.com/auth/facebook/callback',
-//     },
-//     function (accessToken, refreshToken, profile, done) {
-//       done(null, profile);
-//     },
-//   ),
-// );

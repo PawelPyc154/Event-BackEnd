@@ -173,8 +173,6 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
     return next(new ErrorResponse('Email could not be send', 500));
   }
-
-  // res.status(200).json({ success: true, data: user });
 });
 
 // @desc         Reset password

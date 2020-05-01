@@ -4,7 +4,7 @@ const sendEmail = require('../utils/sendEmail');
 
 // @desc         Send email
 // @route        POST /api/contact
-// @access       Puvlic
+// @access       Public
 exports.sendEmail = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
 

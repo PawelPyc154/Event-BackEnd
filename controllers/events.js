@@ -42,7 +42,7 @@ exports.deleteEvent = asyncHandler(async (req, res, next) => {
   }
 
   // Make sure user is event owner
-  if (event.user.toString() !== req.user.id && req.user.role !== 'admin') {
+  if (event.user.toString() !== req.user.id) {
     return next(
       new ErrorResponse(
         `User ${req.params.id} is not authorizated to update this event`,
@@ -68,7 +68,7 @@ exports.updateEvent = asyncHandler(async (req, res, next) => {
   }
 
   // Make sure user is event owner
-  if (event.user.toString() !== req.user.id && req.user.role !== 'admin') {
+  if (event.user.toString() !== req.user.id) {
     return next(
       new ErrorResponse(
         `User ${req.params.id} is not authorizated to update this event`,

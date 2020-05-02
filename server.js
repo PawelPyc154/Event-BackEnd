@@ -1,8 +1,9 @@
 const express = require('express');
+const http = require('http');
+const socketio = require('socket.io');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
-
 // dev helper
 require('colors');
 const morgan = require('morgan');
@@ -14,22 +15,23 @@ const helmet = require('helmet');
 const hpp = require('hpp');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
-
 // conect DB
 const conectDB = require('./config/db');
 // middleware
 const errorHandler = require('./middleware/error');
-
 // routes
 const events = require('./routes/events');
 const auth = require('./routes/auth');
 const contact = require('./routes/contact');
-// ///////////////////////////////////////////////////////////////////////
 
 dotenv.config({ path: './config/config.env' }); // load env vars
 conectDB(); // conect DB
 
 const app = express();
+// socket.io
+const serverHttp = http.createServer(app);
+const io = socketio(serverHttp);
+require('./modules/socket/socket')(io);
 
 app.use(express.json()); // Json parser
 app.use(cookieParser()); // Cookie parser
@@ -52,7 +54,7 @@ app.use(hpp());
 app.use(cors({ credentials: true, origin: true }));
 
 // passport
-require('./passport');
+require('./modules/passport');
 
 app.use(passport.initialize());
 
@@ -60,10 +62,11 @@ app.use(passport.initialize());
 app.use('/api/events', events);
 app.use('/api/auth', auth);
 app.use('/api/contact', contact);
+
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(
+const server = serverHttp.listen(
   PORT,
   console.log(`Server running on port ${PORT}`.yellow.bold),
 );

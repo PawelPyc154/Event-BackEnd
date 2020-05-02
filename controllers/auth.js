@@ -114,7 +114,10 @@ exports.login = asyncHandler(async (req, res, next) => {
 // @route        POST /api/auth/me
 // @access       Private
 exports.getMe = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).populate({
+    path: 'chat.user',
+    select: 'name',
+  });
   res.status(200).json({ success: true, data: user });
 });
 

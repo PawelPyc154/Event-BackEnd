@@ -36,15 +36,10 @@ const EventSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Please add event time start'],
   },
-
   type: {
     type: String,
     enum: ['dance', 'picnic'],
     default: 'dance',
-  },
-  fbList: {
-    type: Boolean,
-    default: false,
   },
   createdAt: {
     type: Date,

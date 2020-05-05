@@ -55,6 +55,7 @@ const EventSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  image: { type: String },
 });
 
 EventSchema.pre('save', function (next) {

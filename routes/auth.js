@@ -8,7 +8,7 @@ const {
   forgotPassword,
   resetPassword,
   updateDetails,
-  LoginRegisterFbGoogle,
+  loginRegisterFbGoogle,
   logout,
 } = require('../controllers/auth');
 require('colors');
@@ -21,17 +21,15 @@ router.post('/login', login);
 router.post('/logout', logout);
 router.get('/me', protect, getMe);
 router.get('/updatedetails', protect, updateDetails);
-router.post('/forgotpassword', forgotPassword);
-router.put('/resetpassword/:resettoken', resetPassword);
 router.post(
   '/facebook/token',
   passport.authenticate('facebook-token'),
-  LoginRegisterFbGoogle,
+  loginRegisterFbGoogle,
 );
 router.post(
   '/google/token',
   passport.authenticate('google-token'),
-  LoginRegisterFbGoogle,
+  loginRegisterFbGoogle,
 );
 
 router.get('/facebook', passport.authenticate('facebook'));

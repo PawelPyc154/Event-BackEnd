@@ -4,18 +4,18 @@ exports.emailValidation = [
   check('email')
     .trim()
     .isEmail()
-    .withMessage('Please include a valid email')
+    .withMessage('Wpisz prawidłowy email')
     .normalizeEmail(),
   check('subject')
     .trim()
     .notEmpty()
-    .withMessage('Subject is required')
+    .withMessage('Temat jest wymagany')
     .isLength({ min: 6, max: 50 })
-    .withMessage('Subject should have minimum length 6 and maximum 50'),
+    .withMessage('Temat powinien mieć od 6 do 50 znaków'),
   check('message')
     .trim()
     .notEmpty()
-    .withMessage('Message is required')
+    .withMessage('Wiadomość jest wymagana')
     .isLength({ min: 6, max: 500 })
-    .withMessage('Subject should have minimum length 6 and maximum 500'),
+    .withMessage('Wiadomość powinna mieć od 6 do 50 znaków'),
 ];

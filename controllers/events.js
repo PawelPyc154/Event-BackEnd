@@ -5,8 +5,8 @@ const geocoder = require('../utils/geocoder');
 const translate = require('../utils/translate');
 const ErrorResponse = require('../utils/errorResponse');
 
-// @desc         Get all bootcamps
-// @route        GET /api/bootcamps
+// @desc         Get all events
+// @route        GET /api/events
 // @access       Public
 exports.getEvents = asyncHandler(async (req, res, next) => {
   const events = await Event.find().populate({ path: 'user', select: 'name' });
@@ -14,8 +14,8 @@ exports.getEvents = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, count: events.length, data: events });
 });
 
-// @desc         Create bootcamp
-// @route        POST /api/bootcamps
+// @desc         Create event
+// @route        POST /api/events
 // @access       Private
 exports.createEvent = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;

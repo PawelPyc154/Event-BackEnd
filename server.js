@@ -1,57 +1,31 @@
 const express = require('express');
 const http = require('http');
-const socketio = require('socket.io');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
-// dev helper
-require('colors');
-const morgan = require('morgan');
-// protect
-const cors = require('cors');
-const fileupload = require('express-fileupload');
-const mongoSanitize = require('express-mongo-sanitize');
-const helmet = require('helmet');
-const hpp = require('hpp');
-const xss = require('xss-clean');
-const rateLimit = require('express-rate-limit');
-// conect DB
-const conectDB = require('./config/db');
 // middleware
 const errorHandler = require('./middleware/error');
-// routes
-const events = require('./routes/events');
-const auth = require('./routes/auth');
-const contact = require('./routes/contact');
+// modules
+const protect = require('./modules/protect');
+const routes = require('./modules/routes');
+const socket = require('./modules/socket');
+const connectDB = require('./modules/db');
+const devHeplers = require('./modules/devHeplers');
 
 dotenv.config({ path: './config/config.env' }); // load env vars
-conectDB(); // conect DB
+
+connectDB();
 
 const app = express();
-// socket.io
 const serverHttp = http.createServer(app);
-const io = socketio(serverHttp);
-require('./modules/socket/socket')(io);
+
+socket(serverHttp);
 
 app.use(express.json()); // Json parser
 app.use(cookieParser()); // Cookie parser
-app.use(morgan('dev')); // Dev loggin middleware
 
-// Protect
-const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 100,
-  message: {
-    error: { limiter: `Zbyt dużo zapytań, spróbuj za godzine` },
-  },
-});
-app.use(limiter);
-app.use(fileupload());
-app.use(mongoSanitize());
-app.use(helmet());
-app.use(xss());
-app.use(hpp());
-app.use(cors({ credentials: true, origin: true }));
+devHeplers(app);
+protect(app);
 
 // passport
 require('./modules/passport');
@@ -59,9 +33,7 @@ require('./modules/passport');
 app.use(passport.initialize());
 
 // routes
-app.use('/api/events', events);
-app.use('/api/auth', auth);
-app.use('/api/contact', contact);
+routes(app);
 
 app.use(errorHandler);
 

@@ -50,7 +50,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @route        POST /api/auth/facebook/token
 // @route        POST /api/auth/google/token
 // @access       Public
-exports.LoginRegisterFbGoogle = asyncHandler(async (req, res, next) => {
+exports.loginRegisterFbGoogle = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.user._json.email });
   if (user) {
     return sendTokenResponse(user, 200, res);
@@ -65,7 +65,7 @@ exports.LoginRegisterFbGoogle = asyncHandler(async (req, res, next) => {
 });
 
 // @desc         Login user
-// @route        POST /api/auth/register
+// @route        POST /api/auth/login
 // @access       Public
 exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
@@ -75,24 +75,27 @@ exports.login = asyncHandler(async (req, res, next) => {
       new ErrorResponse(
         {
           password:
-            'Please add a password or try login with FaceBook or Google',
+            'Podaj hasło lub spróbuj zalogować się przy użyciu FaceBook or Google',
         },
         401,
       ),
     );
   }
   if (!email) {
-    return next(new ErrorResponse({ email: 'Please add an email' }, 400));
+    return next(new ErrorResponse({ email: 'Email jest wymagany' }, 400));
   }
   if (!password) {
-    return next(new ErrorResponse({ password: 'Please add a password' }, 400));
+    return next(new ErrorResponse({ password: 'Hasło jest wymagane' }, 400));
   }
   // check for user
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
     return next(
       new ErrorResponse(
-        { email: 'Invalid credentials', password: 'Invalid credentials' },
+        {
+          email: 'Nieprawidlowe dane logowania',
+          password: 'Nieprawidlowe dane logowania',
+        },
         401,
       ),
     );
@@ -102,7 +105,10 @@ exports.login = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     return next(
       new ErrorResponse(
-        { email: 'Invalid credentials', password: 'Invalid credentials' },
+        {
+          email: 'Nieprawidlowe dane logowania',
+          password: 'Nieprawidlowe dane logowania',
+        },
         401,
       ),
     );
@@ -144,60 +150,4 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     runValidators: true,
   });
   res.status(200).json({ success: true, data: user });
-});
-
-// @desc         Forgot password
-// @route        POST /api/auth/forgotpassword
-// @access       Public
-exports.forgotPassword = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    return next(new ErrorResponse('There is no user with that email', 404));
-  }
-  // Get reset token
-  const resetToken = user.getResetPasswordToken();
-  await user.save({ validateBeforeSave: false });
-  // Create reset url
-  const resetUrl = `${req.protocol}://${req.get(
-    'host',
-  )}/api/auth/resetpassword/${resetToken}`;
-  const message = `You are receiving this email becaouse you (or somone else)has requested the reset of a password.Please make a PUT request to : \n\n ${resetUrl}`;
-  try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Password reset token',
-      message,
-    });
-    res.status(200).json({ success: true, data: 'Email sent' });
-  } catch (err) {
-    console.log(err);
-    user.resetPasswardToken = undefined;
-    user.resetPasswardExpire = undefined;
-    await user.save({ validateBeforeSave: false });
-    return next(new ErrorResponse('Email could not be send', 500));
-  }
-});
-
-// @desc         Reset password
-// @route        PUT /api/auth/resetpassword/:reserttoken
-// @access       Public
-exports.resetPassword = asyncHandler(async (req, res, next) => {
-  // Get hashed token
-  const resetPasswardToken = crypto
-    .createHash('sha256')
-    .update(req.params.resettoken)
-    .digest('hex');
-  const user = await User.findOne({
-    resetPasswardToken,
-    resetPasswardExpire: { $gt: Date.now() },
-  });
-  if (!user) {
-    return next(new ErrorResponse('Invalid token', 400));
-  }
-  // Set new password
-  user.password = req.body.password;
-  user.resetPasswardToken = undefined;
-  user.resetPasswardExpire = undefined;
-  await user.save();
-  sendTokenResponse(user, 200, res);
 });

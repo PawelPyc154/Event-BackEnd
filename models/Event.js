@@ -5,36 +5,36 @@ const EventSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    required: [true, 'Please add a name'],
-    max: [50, 'Too long'],
+    required: [true, 'Nazwa jest wymagana'],
+    max: [50, 'Zbyt długa nazwa'],
   },
   describe: {
     type: String,
     trim: true,
-    max: [500, 'Too long'],
+    max: [500, 'Zbyt długi opis'],
   },
   slug: String,
   coordinates: {
     longitude: {
       type: Number,
-      required: [true, 'Please add a longitude'],
+      required: [true, 'Długość geograficzna jest wymagana'],
     },
     latitude: {
       type: Number,
-      required: [true, 'Please add a longitude'],
+      required: [true, 'Szerokość geograficzna jest wymagana'],
     },
   },
   place: {
     type: String,
-    required: [true, 'Please add place'],
+    required: [true],
   },
   province: {
     type: String,
-    required: [true, 'Please add province'],
+    required: [true],
   },
   date: {
     type: Number,
-    required: [true, 'Please add event time start'],
+    required: [true, 'Data początku wydarzenia jest wymagana'],
   },
   type: {
     type: String,

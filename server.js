@@ -16,13 +16,13 @@ dotenv.config({ path: './config/config.env' });
 
 connectDB();
 
-const app = express();
+let app = express();
 
+app = protect(app);
 app.use(express.json());
 app.use(cookieParser());
 
 devHeplers(app);
-protect(app);
 
 require('./modules/passport');
 

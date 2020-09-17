@@ -14,9 +14,9 @@ const sendTokenResponse = (user, statusCode, res) => {
     ),
     httpOnly: true, // cookie only in server
   };
-  if (process.env.NODE_ENV === 'production') {
-    options.select = true;
-  }
+  // if (process.env.NODE_ENV === 'production') {
+  //   options.select = true;
+  // }
   res
     .status(statusCode)
     .cookie('token', token, options)

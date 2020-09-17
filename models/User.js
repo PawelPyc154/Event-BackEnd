@@ -25,16 +25,6 @@ const UserSchema = new mongoose.Schema({
     minlength: [6, 'Hasło jest zbyt krótkie!'],
     select: false,
   },
-  chat: [
-    {
-      user: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-        required: true,
-      },
-      message: String,
-    },
-  ],
   resetPasswardToken: String,
   resetPasswardExpire: Date,
   createdAt: {

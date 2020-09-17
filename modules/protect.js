@@ -13,14 +13,15 @@ const limiter = rateLimit({
     error: { limiter: `Zbyt dużo zapytań, spróbuj za godzine` },
   },
 });
+
 const protect = (app) => {
+  app.use(cors({ credentials: true, origin: true }));
   app.use(limiter);
   app.use(fileupload());
   app.use(mongoSanitize());
   app.use(helmet());
   app.use(xss());
   app.use(hpp());
-  app.use(cors({ credentials: true, origin: true }));
   return app
 };
 module.exports = protect;

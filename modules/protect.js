@@ -15,6 +15,7 @@ const limiter = rateLimit({
 });
 
 const protect = (app) => {
+
   app.use(cors({ credentials: true, origin: true }));
   app.use(limiter);
   app.use(fileupload());

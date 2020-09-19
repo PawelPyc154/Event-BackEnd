@@ -12,16 +12,18 @@ const sendTokenResponse = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
     ),
-    httpOnly: false, // cookie only in server
-    sameSide: false,
-
+    httpOnly: true, // cookie only in server
+    sameSite: 'none',
+    secure: true
   };
   if (process.env.NODE_ENV === 'production') {
     options.select = true
     options.secure = true
   }
+  // const cookie = `token=${token}; SameSite=Lax; Secure; HttpOnly=true`
+  // res.setHeader('Set-Cookie', [cookie]);
+  // res.json({ success: true });
   res
-
     .status(statusCode)
     .cookie('token', token, options)
     .json({ success: true });

@@ -13,7 +13,8 @@ const sendTokenResponse = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
     ),
     httpOnly: false, // cookie only in server
-    sameside: false,
+    sameSide: false,
+
   };
   if (process.env.NODE_ENV === 'production') {
     options.select = true

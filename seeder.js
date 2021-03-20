@@ -30,7 +30,7 @@ const users = JSON.parse(
 const importData = async () => {
   try {
     await Event.create(events);
-    await User.create(users);
+    await User.create(users); // create vs insertmany
 
     console.log('Data Imported...'.green.inverse);
     process.exit();

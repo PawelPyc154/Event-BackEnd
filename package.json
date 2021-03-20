@@ -24,10 +24,10 @@
     "helmet": "^3.23.3",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.5",
+    "mongoose": "^5.10.7",
     "morgan": "^1.10.0",
     "node-geocoder": "^3.27.0",
-    "nodemailer": "^6.4.11",
+    "nodemailer": "^6.4.12",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "passport-facebook-token": "^3.3.0",
@@ -40,8 +40,8 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^2.0.4",
     "prettier": "^2.1.2"
